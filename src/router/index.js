@@ -5,6 +5,7 @@ import Login from '@/views/Login.vue'
 import Signup from '@/views/Signup.vue'
 import Post from '@/views/Post.vue'
 import Profil from '@/views/Profil.vue'
+import Likes from '@/views/Likes.vue'
 
 const routes = [
     {path: '/', name: 'Home', component: Home},
@@ -12,7 +13,8 @@ const routes = [
     {path: '/login', name: 'Login', component: Login},
     {path: '/signup', name: 'Signup', component: Signup},
     {path: '/profil', name: 'Profil', component: Profil},
-    {path: '/post', name: 'Post', component: Post}
+    {path: '/post', name: 'Post', component: Post},
+    {path: '/likes', name: 'Likes', component: Likes}
 ]
 
 const router = createRouter({
