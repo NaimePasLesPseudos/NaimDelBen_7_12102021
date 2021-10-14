@@ -5,6 +5,7 @@ import Login from '@/views/Login.vue'
 import Signup from '@/views/Signup.vue'
 import Post from '@/views/Post.vue'
 import Profil from '@/views/Profil.vue'
+import Settings from '@/views/Settings.vue'
 import Likes from '@/views/Likes.vue'
 
 const routes = [
@@ -14,6 +15,7 @@ const routes = [
     {path: '/signup', name: 'Signup', component: Signup},
     {path: '/profil', name: 'Profil', component: Profil},
     {path: '/post', name: 'Post', component: Post},
+    {path: '/settings', name: 'Settings', component: Settings},
     {path: '/likes', name: 'Likes', component: Likes}
 ]
 
