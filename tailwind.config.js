@@ -1,6 +1,6 @@
 module.exports = {
     purge: [],
-    darkMode: false, // or 'media' or 'class'
+    darkMode: false,
     theme: {
       extend: {},
     },
@@ -9,6 +9,7 @@ module.exports = {
     },
     plugins: [
       require('daisyui'),
+      require('@tailwindcss/typography'),
     ],
     daisyui: {
       styled: true,
