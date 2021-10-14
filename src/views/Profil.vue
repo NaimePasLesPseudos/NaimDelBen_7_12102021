@@ -4,17 +4,7 @@
 <div class="flex m-10">
     <div class="flex flex-col w-2/5 p-5">
         
-        <div class="flex items-center mb-10">
-            <div class="avatar">
-                <div class="mb-8 rounded-btn w-24 h-24">
-                    <img src="http://daisyui.com/tailwind-css-component-profile-2@94w.png">
-                </div>
-            </div> 
-            <div class="flex-col content-between ml-10">
-                <h2 class="card-title">Name Name</h2>
-                <p class="text-base-content">Lorem ipsum dolor sit, amet consectetur adipisicing elit. Aspernatur, tenetur deleniti. </p>
-            </div>
-        </div>
+        <user-card :name="name" :bio="bio" />
 
         <div class="grid-flow-row shadow stats">
             <div class="stat">
@@ -44,6 +34,22 @@
 <script setup>
 import Header from '../components/header.vue'
 import Footer from '../components/footer.vue'
+import UserCard from '../components/User/UserCard.vue'
+</script>
+
+<script>
+export default {
+    name: "Profil",
+    components: {
+        UserCard
+    },
+    data() {
+        return {
+            name: "Michel",
+            bio: "Du service info et de l'humour"
+        }
+    }
+}
 </script>
 
 <style>
