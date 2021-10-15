@@ -7,6 +7,7 @@ import Settings from '@/views/Settings.vue'
 import User from '@/views/User.vue'
 import Post from '@/views/Post.vue'
 import Likes from '@/views/Likes.vue'
+import Lost from '@/views/404.vue'
 
 const routes = [
     {path: '/', name: 'Home', component: Home},
@@ -17,6 +18,8 @@ const routes = [
     {path: '/user/:id', name: 'User', component: User},
     {path: '/post/:id', name: 'Post', component: Post},
     {path: '/likes', name: 'Likes', component: Likes},
+    {path: '/lost', name: 'Lost', component: Lost},
+
 ]
 
 const router = createRouter({
@@ -25,6 +28,3 @@ const router = createRouter({
 })
 
 export default router
-
-// TODO:
-// [ ] Page 404
