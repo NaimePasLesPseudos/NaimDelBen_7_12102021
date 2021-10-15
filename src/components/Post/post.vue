@@ -1,22 +1,50 @@
 <template>
 <div class="post border-2 bg-base-100 p-5 mb-10 rounded-box">
-    <p class="text-xs mb-2 text-">Publié par {{ userName }} il y a DATE</p>
+    <p class="text-xs mb-2 text-">Publié par {{ userName }} il y a {{ date }}</p>
     <h2 class="text-xl mb-2"> {{ title }} </h2>
     <p> {{ content }} </p>
-<div class="flex mt-2">
-      <p>💬 : {{ comments }} </p>
-      <p>👍 : {{ thumbs }} </p>
-      <p>💡 : {{ lightBulbs }} </p>
-      <p>🤣 : {{ rofls }} </p>
-      <p>💕 : {{ hearts }} </p>
+
+    <div class="flex justify-between mt-5">
+        <div class="btn-group ">
+            <button class="btn btn-outline btn-sm tooltip" data-tip="Commentaires">
+                💬 : {{ comments }}
+            </button> 
+            <button class="btn btn-outline btn-sm tooltip" data-tip="Pouce en l'air" @click="thumbs++">
+                👍 : {{ thumbs }}
+            </button> 
+            <button class="btn btn-outline btn-sm tooltip" data-tip="J'adore" @click="hearts++">
+                💕 : {{ hearts }}
+            </button>       
+            <button class="btn btn-outline btn-sm tooltip" data-tip="Du génie" @click="lightBulbs++">
+                💡 : {{ lightBulbs }}
+            </button>       
+            <button class="btn btn-outline btn-sm tooltip" data-tip="Je me roule par terre" @click="rofls++">
+                🤣 : {{ rofls }}
+            </button> 
+        </div> 
+            <label for="delete-modal" class="btn btn-outline btn-sm tooltip" data-tip="Supprimer ce message">❌</label>
     </div>
 </div>
+
+<input type="checkbox" id="delete-modal" class="modal-toggle"> 
+<div class="modal">
+  <div class="modal-box">
+    <p>Êtes-vous sûr de vouloir supprimer cet article ? </p> 
+    <div class="modal-action">
+      <label for="delete-modal" class="btn btn-warning">Supprimer</label> 
+      <label for="delete-modal" class="btn">Annuler</label>
+    </div>
+  </div>
+</div> 
 </template>
 
 <script>
 export default {
     name: "Post",
     props: {
+        date: {
+            required: true
+        },
         id: {
             type: Number
         },
