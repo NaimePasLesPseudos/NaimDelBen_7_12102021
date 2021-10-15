@@ -5,8 +5,13 @@ class GroupomaniaData{
         return http.get("/v1/posts")
     }
 
+    getPost(id) {
+        return http.get(`/v1/posts/${id}`)
+        console.log('get one Post : ok')
+    }
+
     getUser(id) {
-        return http.get("/v1/users/${id}")
+        return http.get(`/v1/users/${id}`)
     }
 
 }
