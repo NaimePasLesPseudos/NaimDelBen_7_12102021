@@ -2,6 +2,8 @@
 <Header />
   <div class="post">
     <h1>This is a post page</h1>
+      <div>Item: {{ $route.params.id }}</div>
+
   </div>
 <Footer />
 </template>

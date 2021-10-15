@@ -24,6 +24,8 @@
 
     <div class="flex w-3/5 p-10">
         <h1 class="text-6xl">Flux</h1>
+  <div>Item: {{ $route.params.id }}</div>
+
     </div>
 </div>
 
@@ -39,14 +41,14 @@ import UserCard from '../components/User/UserCard.vue'
 
 <script>
 export default {
-    name: "Profil",
+    name: "MyProfil",
     components: {
         UserCard
     },
     data() {
         return {
             name: "Michel",
-            bio: "Du service info et de l'humour"
+            bio: "Du service info et au service de l'humour"
         }
     }
 }
