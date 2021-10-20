@@ -1,9 +1,6 @@
 <template>
-<Header />
-
 
 <div class="flex-col mx-10">
-<h1 class="text-lg mb-5 ml-2"> En ce moment</h1>
   <Post 
       :title="post.title"
       :userName="post.userName"
@@ -16,16 +13,30 @@
       :id="post.id"
   />
 
+
+<div class="comment border-2 bg-base-100 p-2 mb-5 rounded-box ml-5">
+  <!-- TODO: Zone de commentaire -->
+  <Comment
+      v-for="comment in comments"
+        :title="comment.title"
+        :userName="comment.userName"
+        :content="comment.content"
+        :comments="comment.comments"
+        :thumbs="comment.thumbs"
+        :lightBulbs="comment.lightbulbs"
+        :rofls="comment.rofls"
+        :hearts="comment.hearts"
+        :id="comment.id"
+        :key="comment.id"
+  />
+</div>
 </div>
 
-
-<Footer />
 </template>
 
 <script setup>
-import Header from '../components/header.vue'
-import Footer from '../components/footer.vue'
-import Post from '../components/Post/post.vue'
+import Post from '@components/Post/post.vue'
+import Comment from '@components/Comment/Comment.vue'
 import GroupomaniaData from "../services/Data"
 </script>
 
@@ -33,11 +44,13 @@ import GroupomaniaData from "../services/Data"
 export default {
   name: "post",
   components: {
-    Post
+    Post,
+    Comment
   },
   data() {
     return {
-      post: []
+      post: [],
+      comments: [],
     }
   },
   methods: {
@@ -49,15 +62,22 @@ export default {
       }).catch((err) => {
         console.log(err)
       });
+    },
+    searchComments() {
+      GroupomaniaData.getAllComments(this.$route.params.id)
+      .then((result) => {
+        this.comments = result.data
+        console.log(result.data)
+      }).catch((err) => {
+        console.log(err)
+      });
     }
   },
   mounted() {
     this.searchPost()
+    this.searchComments()
   }
 }
 </script>
 
-<style>
-
-</style>
 

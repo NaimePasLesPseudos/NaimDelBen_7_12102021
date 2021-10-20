@@ -1,13 +1,15 @@
 <template>
 <div class="post border-2 bg-base-100 p-5 mb-10 rounded-box">
     <p class="text-xs mb-2 text-">Publié par {{ userName }} il y a {{ date }}</p>
-    <h2 class="text-xl mb-2"> {{ title }} </h2>
+    <router-link :to="'/post/' + id"><h2 class="text-xl mb-2"> {{ title }} </h2></router-link>
     <p> {{ content }} </p>
 
     <div class="flex justify-between mt-5">
         <div class="btn-group ">
             <button class="btn btn-outline btn-sm tooltip" data-tip="Commentaires">
+                <router-link :to="'/post/' + id"> 
                 💬 : {{ comments }}
+                </router-link>
             </button> 
             <button class="btn btn-outline btn-sm tooltip" data-tip="Pouce en l'air" @click="thumbs++">
                 👍 : {{ thumbs }}
@@ -22,14 +24,15 @@
                 🤣 : {{ rofls }}
             </button> 
         </div> 
-            <label for="delete-modal" class="btn btn-outline btn-sm tooltip" data-tip="Supprimer ce message">❌</label>
+            <label for="delete-modal" class="btn btn-outline btn-sm tooltip" data-tip="Supprimer">❌</label>
     </div>
 </div>
 
 <input type="checkbox" id="delete-modal" class="modal-toggle"> 
 <div class="modal">
   <div class="modal-box">
-    <p>Êtes-vous sûr de vouloir supprimer cet article ? </p> 
+    <p>Êtes-vous sûr de vouloir supprimer cette publication ? <br>
+    ⛔️ Cette action est irréversible ! ⛔️</p> 
     <div class="modal-action">
       <label for="delete-modal" class="btn btn-warning">Supprimer</label> 
       <label for="delete-modal" class="btn">Annuler</label>
