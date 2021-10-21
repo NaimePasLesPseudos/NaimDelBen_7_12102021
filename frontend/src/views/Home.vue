@@ -1,11 +1,11 @@
 <template>
 
 <div class="flex-col mx-10">
-    <div v-if="status === Status.RUNNING"> Loading... </div>
+    <div v-if="status !== Status.SUCCESS"> Loading... </div>
     <div v-else>
         <h1 class="text-lg mt-10 mb-5 ml-2"> Les dernières publications :</h1>
         <Post 
-            v-for="post in posts" 
+            v-for="post in posts"
             :title="post.title"
             :userName="post.userName"
             :content="post.content"
@@ -19,7 +19,6 @@
         > 
         </Post>
     </div>
-
 </div>
 
 </template>
