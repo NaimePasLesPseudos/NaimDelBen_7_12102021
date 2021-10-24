@@ -4,7 +4,7 @@
 
     <router-link to="/" class=" px-2 mx-2 tooltip tooltip-bottom" data-tip="Accueil">
         <span class="text-lg font-bold">
-            <img class="logo object-cover " alt="Groupomania logo" src="../../assets/logo/icon-left-font-monochrome-white.png" />
+            <img class="logo object-cover " alt="Groupomania logo" src="../assets/logo/icon-left-font-monochrome-white.png" />
         </span>
     </router-link> 
 

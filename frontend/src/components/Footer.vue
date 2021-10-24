@@ -1,7 +1,7 @@
 <template>
 <footer class="p-10 footer bg-primary text-primary-content footer-center">
     <div>
-        <img src="../../assets/logo/icon.svg" alt="logo groupomania footer">
+        <img src="../assets/logo/icon.svg" alt="logo groupomania footer">
         <p class="font-bold">Groupomania
             <br>Created by Naïm with ❤️
         </p> 

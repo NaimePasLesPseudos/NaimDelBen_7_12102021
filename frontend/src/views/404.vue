@@ -7,6 +7,3 @@
 
 <Footer />
 </template>
-
-<script setup>
-</script>

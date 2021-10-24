@@ -16,15 +16,14 @@
             :hearts="post.hearts"
             :key="post.id"
             :id="post.id"
-        > 
-        </Post>
+        > </Post>
     </div>
 </div>
 
 </template>
 
 <script >
-import Post from '@components/Post/post.vue'
+import Post from '@components/post.vue'
 import { searchPosts } from '@composable/fetchPosts'
 
 export default {

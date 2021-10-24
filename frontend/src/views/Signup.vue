@@ -46,7 +46,7 @@
 </template>
 
 <script setup>
-import Footer from '@components/Nav/Footer.vue'
+import Footer from '@components/Footer.vue'
 </script>
 
 <style>

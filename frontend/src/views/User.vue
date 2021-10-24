@@ -5,13 +5,12 @@
             :name="user.name"
             :avatar="user.avatar"
             :bio="user.bio"
-        > 
-        </UserCard>
+        > </UserCard>
     </div>
 </template>
 
 <script>
-import UserCard from '@components/User/UserCard.vue'
+import UserCard from '@components/UserCard.vue'
 import { searchUser } from "@composable/useUser";
 import { useRoute } from 'vue-router'
 
