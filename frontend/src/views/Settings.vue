@@ -1,39 +1,28 @@
 <template>
 
 <div class="mx-10 w-1/2 ">
-    <div class="tabs mb-10">
-        <a class="tab tab-lifted tab-lg tab-active">Profile</a> 
-        <a class="tab tab-lifted tab-lg">Group</a> 
-        <a class="tab tab-lifted tab-lg">Others</a>  
+
+    <div class="tabs my-10">
+        <button
+            v-for="tab in tabs"
+            v-bind:key="tab"
+            v-bind:class="['tab', 'tab-lifted', 'tab-lg', { 'tab-active': currentTab === tab }]"
+            v-on:click="currentTab = tab"
+        >
+            {{ tab }}
+        </button>
     </div>
 
-    <div class="ml-5">
-        <h1>Paramètres du profil</h1>
+<keep-alive>
+    <component 
+        :is="currentTabComponent"
+        :name="user.name"
+        :bio="user.bio"
+        :email="user.email"
+    ></component>
+</keep-alive>
 
-        <div class="form-control my-5">
-            <label class="label">
-            <span class="label-text">Modifier mon nom :</span>
-            </label> 
-            <input type="text" placeholder="Nom" class="input input-bordered" v-model="user.name">
-        </div>
-
-
-        <div class="form-control my-5">
-            <label class="label">
-            <span class="label-text">Changer mon mail :</span>
-            </label> 
-            <input type="text" placeholder="Mail" class="input input-bordered" v-model="user.email">
-        </div>
-
-        <div class="form-control my-5">
-            <label class="label">
-            <span class="label-text">Changer ma phrase de présentation : </span>
-            </label> 
-            <textarea class="textarea h-24 textarea-bordered" placeholder="Bio" v-model="user.bio"></textarea>
-        </div>
-
-        <label for="change-profile-modal" class="btn btn-primary modal-button mb-10">Enregistrer</label> 
-    </div>
+    
 </div>
 
 <input type="checkbox" id="change-profile-modal" class="modal-toggle"> 
@@ -49,36 +38,25 @@
 
 </template>
 
-<script setup>
-import GroupomaniaData from '../services/Data'
-</script>
-
 <script>
-// TODO : Rajouter la possibilité de changer sa photo
+import UserSettingsProfile from '@components/UserSettingsProfile.vue'
+import UserSettingsAccount from '@components/UserSettingsAccount.vue'
+import { searchUser } from '@composable/useUser'
+import { computed, ref } from 'vue'
+
 export default {
-    name: "Settings",
-    data() {
-        return {
-            user: []
-        }
-    },
-    methods: {
-        searchUser() {
-            // TODO: id doit venir du JWT
-            GroupomaniaData.getUser(8)
-            .then((result) => {
-                this.user = result.data
-                console.log(result.data)
-            }).catch((err) => {
-                console.log(err)
-            });
+    components: { 
+        UserSettingsProfile, 
+        UserSettingsAccount,
         },
-        updateProfile() {
-            GroupomaniaData.updateUser(8, this.user)
-        }
+    name: "Settings",
+    async setup() {
+            // TODO: id doit venir du JWT
+        const { user, status, Status } = await searchUser(8)
+        const currentTab = ref('Profile')
+        const tabs = ['Profile', 'Account']
+        const currentTabComponent = computed(() => `UserSettings${currentTab.value}`)
+        return { tabs, currentTab, currentTabComponent, user, status, Status }
     },
-    mounted() {
-        this.searchUser()
-    }
 }
 </script>
