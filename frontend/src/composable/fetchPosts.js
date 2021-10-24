@@ -36,3 +36,32 @@ export async function searchPosts() {
         Status,
     }
 }
+
+export async function searchPost(id) {
+    let status = ref(Status.IDLE)
+    let post = ref(await fetchPost())
+    watchEffect(() => console.log(status.value))
+
+    async function fetchPost() {
+        status.value = Status.RUNNING
+        try {
+            const res = await api.getPost(id)
+            if (!res.ok) {
+                status.value = Status.ERROR
+            }
+            console.log(res)
+            const json = await res.json()
+            status.value = Status.SUCCESS
+            return json
+        } catch (err) {
+            status.value = Status.ERROR
+            throw new Error(err);
+        }
+    }
+
+    return {
+        post,
+        status,
+        Status,
+    }
+}
