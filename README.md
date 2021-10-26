@@ -1,7 +1,66 @@
-# Vue 3 + Vite
+# Groupomania API Documentation
+> Last project in OpenClassrooms for Web Dev's path. By Naïm DEL BEN.
 
-This template should help get you started developing with Vue 3 in Vite. The template uses Vue 3 `<script setup>` SFCs, check out the [script setup docs](https://v3.vuejs.org/api/sfc-script-setup.html#sfc-script-setup) to learn more.
+## Stack
+### Frontend
+[Vite](http://vitejs.dev/)
+Framework : [Vue3](https://v3.vuejs.org/)
+    [Vue Router](https://router.vuejs.org/)
+[Tailwind](https://tailwindcss.com/) + [DaisyUI](https://daisyui.com/)
 
-## Recommended IDE Setup
+### Backend
+Framework : [Node.js](https://nodejs.dev/)
+[Express](https://expressjs.com/)
+ORM : [ObjectionJS](https://vincit.github.io/objection.js/)
 
-- [VSCode](https://code.visualstudio.com/) + [Volar](https://marketplace.visualstudio.com/items?itemName=johnsoncodehk.volar)
+### DB
+Cloud : [Heroku]()
+Database : [PostgreSQL]()
+
+## ----- Routes API -----
+
+### Auth
+Verbs HTTP | URI | Request header and body | Response header and body  
+---------- | --- | ----------------------- | ------------------------
+POST | /v1/auth/signup | { email: string, password: string }
+POST | /v1/auth/login | { email: string, password: string }
+
+
+### Users
+Verbs HTTP | URI | Request header and body | Response header and body  
+---------- | --- | ----------------------- | ------------------------
+POST    | /v1/users | 
+GET     | /v1/users | 
+GET     | /v1/users/:id |
+PUT     | /v1/users/:id |
+DELETE  | /v1/users/:id |
+
+
+### Posts
+Verbs HTTP | URI | Request header and body | Response header and body  
+---------- | --- | ----------------------- | ------------------------
+GET     | /v1/posts |
+POST    | /v1/posts | 
+GET     | /v1/posts/:id |
+PUT     | /v1/posts/:id |
+DELETE  | /v1/posts/:id |
+POST    | /v1/posts/:id/like |
+DELETE  | /v1/posts/:id/like |
+
+
+### Comments
+Verbs HTTP | URI | Request header and body | Response header and body  
+---------- | --- | ----------------------- | ------------------------
+GET     | /v1/posts/:id/comments |
+POST    | /v1/posts/:id/comments |
+GET     | /v1/posts/:id/comments/:id |
+PUT     | /v1/posts/:id/comments/:id |
+DELETE  | /v1/posts/:id/comments/:id |
+POST    | /v1/posts/:id/comments/:id/like |
+DELETE  | /v1/posts/:id/comments/:id/like |
+
+### Likes
+Verbs HTTP | URI | Request header and body | Response header and body  
+---------- | --- | ----------------------- | ------------------------
+
+## ----- tables SQL -----
