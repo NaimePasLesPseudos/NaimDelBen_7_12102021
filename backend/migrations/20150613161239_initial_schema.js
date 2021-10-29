@@ -72,8 +72,6 @@ exports.up = (knex) => {
         })
 
         .createTable('reactions_posts', (table) => {
-            table.increments('id').primary()
-
             table.integer('post_id')
                 .unsigned()
                 .references('id')
@@ -94,11 +92,11 @@ exports.up = (knex) => {
                 .inTable('users')
                 .onDelete('CASCADE')
                 .index()
+
+            table.string('published')
         })
 
         .createTable('reactions_comments', (table) => {
-            table.increments('id').primary()
-
             table.integer('comment_id')
                 .unsigned()
                 .references('id')
@@ -119,6 +117,8 @@ exports.up = (knex) => {
                 .inTable('users')
                 .onDelete('CASCADE')
                 .index()
+
+            table.string('published')
         })
   }
   
