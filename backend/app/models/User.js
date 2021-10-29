@@ -54,7 +54,7 @@ class User extends BaseModel {
             , Comment = require('./Comment')
 
         return {
-            topics: {
+            posts: {
                 relation: BaseModel.HasManyRelation,
                 modelClass: Post,
                 join: {

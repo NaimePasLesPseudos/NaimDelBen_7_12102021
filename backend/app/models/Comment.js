@@ -40,7 +40,7 @@ class Comment extends BaseModel {
             , Post = require('./Post')
 
         return {
-            topics: {
+            posts: {
                 relation: BaseModel.BelongsToOneRelation,
                 modelClass: User,
                 join: {
