@@ -5,7 +5,7 @@ const express = require('express')
     , postRoutes = require('./routes/posts')
     , commentRoutes = require('./routes/comments')
     // , reactionRoutes = require('./app/routes/reaction')
-    // , auth = require('./app/middleware/auth')
+    , auth = require('./middleware/auth')
     , path = require('path')
     , dotenv = require('dotenv')
     , app = express()
@@ -40,7 +40,7 @@ app.use((req, res, next) => {
 app.use(express.json())
 
 // User Authentification
-// app.use(auth.n)
+app.use(auth.n)
 
 // API's routes
 app.use('/v1/users', userRoutes)
