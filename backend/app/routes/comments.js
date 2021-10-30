@@ -1,16 +1,17 @@
 const express = require('express')
     , router = express.Router()
+    , auth = require('../middleware/auth')
     , commentCtrl = require('../controllers/comments')
 
-router.get('/', commentCtrl.getAllComments )
+router.get('/', auth.z, commentCtrl.getAllComments )
 
-router.post('/', commentCtrl.createComment )
+router.post('/', auth.z, commentCtrl.createComment )
 
-router.get('/:id', commentCtrl.getOneComment )
+router.get('/:id', auth.z, commentCtrl.getOneComment )
 
-router.patch('/:id', commentCtrl.updateComment)
+router.patch('/:id', auth.z, commentCtrl.updateComment)
 
-router.delete('/:id', commentCtrl.deleteOneComment)
+router.delete('/:id', auth.z, commentCtrl.deleteOneComment)
 
 // router.post('/:id/reaction', )
 

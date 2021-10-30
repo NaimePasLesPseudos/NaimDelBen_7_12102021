@@ -1,21 +1,22 @@
 const express = require('express')
     , router = express.Router()
+    , auth = require('../middleware/auth')
     , userCtrl = require('../controllers/user')
 
-router.get('/', userCtrl.getAllUsers)
+router.get('/', auth.z, userCtrl.getAllUsers)
 
-router.get('/:id', userCtrl.getOneUser)
+router.get('/:id', auth.z, userCtrl.getOneUser)
 
-router.get('/:id/posts', userCtrl.getOneUserWithAllPosts)
+router.get('/:id/posts', auth.z, userCtrl.getOneUserWithAllPosts)
 
-router.get('/:id/comments', userCtrl.getOneUserWithAllComments)
+router.get('/:id/comments', auth.z, userCtrl.getOneUserWithAllComments)
 
-router.get('/:id/reactions', userCtrl.getOneUserWithAllReactions)
+router.get('/:id/reactions', auth.z, userCtrl.getOneUserWithAllReactions)
 
-router.get('/:id/history', userCtrl.getOneUserHistory)
+router.get('/:id/history', auth.z, userCtrl.getOneUserHistory)
 
-router.patch('/:id', userCtrl.updateOneUser)
+router.patch('/:id', auth.z, userCtrl.updateOneUser)
 
-router.delete('/:id', userCtrl.deleteOneUser)
+router.delete('/:id', auth.z, userCtrl.deleteOneUser)
 
 module.exports = router

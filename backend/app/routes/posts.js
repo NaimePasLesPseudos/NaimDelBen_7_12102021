@@ -1,16 +1,17 @@
 const express = require('express')
     , router = express.Router()
+    , auth = require('../middleware/auth')
     , postCtrl = require('../controllers/posts')
 
-router.get('/', postCtrl.getAllPosts)
+router.get('/', auth.z, postCtrl.getAllPosts)
 
-router.post('/', postCtrl.createPost)
+router.post('/', auth.z, postCtrl.createPost)
 
-router.get('/:id', postCtrl.getOnePost)
+router.get('/:id', auth.z, postCtrl.getOnePost)
 
-router.patch('/:id', postCtrl.updatePost)
+router.patch('/:id', auth.z, postCtrl.updatePost)
 
-router.delete('/:id', postCtrl.deleteOnePost)
+router.delete('/:id', auth.z, postCtrl.deleteOnePost)
 
 // router.post('/:id/reaction', )
 
