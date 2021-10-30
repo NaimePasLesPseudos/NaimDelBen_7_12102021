@@ -23,7 +23,7 @@ class Comment extends BaseModel {
     static get jsonSchema() {
         return {
             type: 'object',
-            required: [],
+            required: ['author_id', 'post_id', 'content', 'published', 'updated'],
             properties: {
                 id: { type: 'integer' },
                 author_id: { type: 'integer' },

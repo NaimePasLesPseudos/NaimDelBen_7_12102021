@@ -35,11 +35,35 @@ class Reaction_Post extends BaseModel {
     static get relationMappings() {
         const User = require('./User')
             , Post = require('./Post')
-            , Comment = require('./Comment')
-            , ReactPosts = require('./Reactions_posts')
-            , ReactComments = require('./Reactions_comments')
+            , React = require('./Reaction')
 
-            return {
+        return {
+            users: {
+                relation: BaseModel.BelongsToOneRelation,
+                modelClass: User,
+                join: {
+                    from: 'reactions_posts.user_id',
+                    to: 'users.id'
+                }
+            },
+
+            comments: {
+                relation: BaseModel.BelongsToOneRelation,
+                modelClass: Post,
+                join: {
+                    from: 'reactions_posts.posts_id',
+                    to: 'posts.id'
+                }
+            },
+
+            reactions: {
+                relation: BaseModel.HasOneRelation ,
+                modelClass: React,
+                join: {
+                    from: 'reactions_posts.reactions_id',
+                    to: 'reactions.id'
+                }
             }
+        }
     }
 }

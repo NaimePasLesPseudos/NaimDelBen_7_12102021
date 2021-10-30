@@ -37,7 +37,7 @@ class Reaction extends BaseModel {
                 relation: BaseModel.HasManyRelation,
                 modelClass: ReactPosts,
                 join: {
-                    from: 'reacts.id',
+                    from: 'reactions.id',
                     to: 'reactions_posts.reaction_id'
                 }
             },
@@ -46,7 +46,7 @@ class Reaction extends BaseModel {
                 relation: BaseModel.HasManyRelation,
                 modelClass: ReactComments,
                 join: {
-                    from: 'reacts.id',
+                    from: 'reactions.id',
                     to: 'reactions_comments.reaction_id'
                 }
             }

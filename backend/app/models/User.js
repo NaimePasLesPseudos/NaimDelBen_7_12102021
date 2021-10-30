@@ -30,7 +30,7 @@ class User extends BaseModel {
     static get jsonSchema() {
         return {
             type: 'object',
-            required: [],
+            required: ['name', 'email', 'password', 'role'],
             properties: {
                 id: { type: 'integer' },
                 name: { type: 'string' },
