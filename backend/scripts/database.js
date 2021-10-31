@@ -6,31 +6,19 @@ const User = require('../app/models/User')
 const Comment = require('../app/models/Comment')
 const bcrypt = require('bcrypt')
 
-async function createSchema() {
-    console.log("========= Start database creation process...")
-    try {
-        console.log("=== Create Post ans User table")
-        await Post.create()
-        await User.create()
-    } catch (error) {
-        console.log("=== !!! Problem when creating Post ans User table !!!")
-    }
-    console.log("=== Post ans User table created")
-    console.log("========= End database creation process")
-}
-
 async function dummyData() {
     console.log("========= Create a dummy data process...")
     try {
-        console.log("=== Create a dummy post")
+        console.log("=== Create data !")
         
         const superPassword = "MotDePasse"
         const hash = await bcrypt.hash(superPassword, 10) 
 
         const user = await User.query().insertGraph({
-            name: "l'équipe communication",
+            name: "l\'équipe communication",
             email: "communication@groupomania.com",
             role: "admin",
+            bio: 'En charge de la communication de l\'entreprise',
             password: hash,
             registred: new Date().toUTCString(),
             lastLogin: new Date().toUTCString(),
@@ -54,11 +42,12 @@ async function dummyData() {
     
         console.log(post)
         console.log(user)
+        console.log(comment)
     } catch (error) {
-        console.log("=== !!! Problem when creating Post ans User data !!!")
+        console.log("=== !!! Problem when creating datas !!!")
         console.error( error )
     }
     console.log("========= End dummy data process")
 }
 
-createSchema().then(dummyData)
+dummyData()

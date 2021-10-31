@@ -6,14 +6,14 @@ exports.up = (knex) => {
             table.string('email')
             table.string('password')
             table.string('role')
-            table.string('bio')
+            table.text('bio')
             table.string('mobile')
             table.string('picture')
             table.string('background')
             table.string('gender')
             table.string('birthday')
-            table.string('registred')
-            table.string('lastLogin')
+            table.datetime('registred')
+            table.datetime('lastLogin')
         })
 
         .createTable('posts', (table) => {
@@ -26,9 +26,9 @@ exports.up = (knex) => {
                 .index()
 
             table.string('title')
-            table.string('content')
-            table.string('published')
-            table.string('updated')
+            table.text('content')
+            table.datetime('published')
+            table.datetime('updated')
         })
 
         .createTable('comments', (table) => {
@@ -48,8 +48,8 @@ exports.up = (knex) => {
                 .index()
 
             table.string('content')
-            table.string('published')
-            table.string('updated')
+            table.datetime('published')
+            table.datetime('updated')
         })
 
         .createTable('reactions', (table) => {
@@ -118,7 +118,7 @@ exports.up = (knex) => {
                 .onDelete('CASCADE')
                 .index()
 
-            table.string('published')
+            table.datetime('published')
         })
   }
   
@@ -132,3 +132,15 @@ return knex.schema
     .dropTableIfExists('reactions_posts')
     .dropTableIfExists('reactions_comments')
 }
+
+// at async dummyData (/Users/naimdelben/Desktop/Projets Code/OCR - Project 7/backend/scripts/database.js:40:22) { nativeError: error: insert into "posts" ("author_id", "content", "published", "title", "updated") values ($1, $2, $3, $4, $5) returning "id"
+
+
+// - value too long for type character varying(255)
+// length: 254,
+// constraint: 'posts_author_id_foreign',
+// detail: 'Key (author_id)=(1) is not present in table "users".',
+
+// - insert or update on table "posts" violates foreign key constraint "posts_author_id_foreign"
+// length: 99,
+// file: 'varchar.c',
