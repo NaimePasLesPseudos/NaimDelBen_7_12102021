@@ -1,6 +1,7 @@
 const jwt = require('jsonwebtoken')
     , dotenv = require('dotenv')
 
+dotenv.config()
 
 // Authentification de l'utilisateur
 exports.n = async (req, res, next) => {
@@ -14,6 +15,7 @@ exports.n = async (req, res, next) => {
             req.userId = userId;
             console.log('authn : succes !')
         } catch (err) {
+            console.log('authn : failed !')
         }
     }
     next();
