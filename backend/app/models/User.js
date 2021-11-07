@@ -5,28 +5,6 @@ class User extends BaseModel {
         return 'users'
     }
 
-    static async create() { // Knex instance
-        const db = this.knex()
-
-        if (await db.schema.hasTable(this.tableName)) return
-        
-        await db.schema.createTable(this.tableName, table => {
-            table.increments(this.idColumn).primary()
-            table.string('name')
-            table.string('email').unique()
-            table.string('password')
-            table.string('role')
-            table.string('bio')
-            table.string('mobile')
-            table.string('picture')
-            table.string('background')
-            table.string('gender')
-            table.string('birthday')
-            table.string('registred')
-            table.string('lastLogin')
-        })
-    }
-
     static get jsonSchema() {
         return {
             type: 'object',
@@ -49,9 +27,20 @@ class User extends BaseModel {
         }
     }
 
+    static get hidden() {
+        return ['password']
+    }
+
+    static modifiers = {
+        displayPostOrComment(query) {
+            query.select('id', 'name')
+        }
+    }
+
     static get relationMappings() {
         const Post = require('./Post')
             , Comment = require('./Comment')
+            , React = require('./Reaction')
 
         return {
             posts: {
@@ -69,6 +58,19 @@ class User extends BaseModel {
                 join: {
                     from: 'users.id',
                     to: 'comments.author_id'
+                }
+            },
+
+            reactPosts: {
+                relation: BaseModel.ManyToManyRelation,
+                modelClass: React,
+                join: {
+                    from: 'users.id',
+                    through: {
+                        from: 'reactions_posts.user_id',
+                        to: 'reactions_posts.reaction_id'
+                    },
+                    to: 'reactions.id'
                 }
             }
         }
