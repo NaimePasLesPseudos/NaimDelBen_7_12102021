@@ -5,25 +5,13 @@ class Reaction_Post extends BaseModel {
         return 'reactions_posts'
     }
 
-    static async create() {
-        const db = this.knex()
-
-        if (await db.schema.hasTable(this.tableName)) return
-
-        await db.schema.createTable(this.tableName, table => {
-            table.integer('post_id')
-            table.integer('reaction_id')
-            table.integer('user_id')
-            table.string('published')
-        })
-    }
-
     static get jsonSchema() {
         return {
             type: 'object',
             required: ['post_id', 'reaction_id', 'user_id', 'published'],
 
             properties: {
+                id: { type: 'integer' },
                 post_id: { type: 'integer' },
                 reaction_id: { type: 'integer' },
                 user_id: { type: 'integer' },
@@ -47,11 +35,11 @@ class Reaction_Post extends BaseModel {
                 }
             },
 
-            comments: {
+            posts: {
                 relation: BaseModel.BelongsToOneRelation,
                 modelClass: Post,
                 join: {
-                    from: 'reactions_posts.posts_id',
+                    from: 'reactions_posts.post_id',
                     to: 'posts.id'
                 }
             },
@@ -60,10 +48,12 @@ class Reaction_Post extends BaseModel {
                 relation: BaseModel.HasOneRelation ,
                 modelClass: React,
                 join: {
-                    from: 'reactions_posts.reactions_id',
+                    from: 'reactions_posts.reaction_id',
                     to: 'reactions.id'
                 }
             }
         }
     }
 }
+
+module.exports = Reaction_Post

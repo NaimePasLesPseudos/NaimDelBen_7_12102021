@@ -5,17 +5,6 @@ class Reaction extends BaseModel {
         return 'reactions'
     }
 
-    static async create() {
-        const db = this.knex()
-
-        if (await db.schema.hasTable(this.tableName)) return
-
-        await db.schema.createTable(this.tableName, table => {
-            table.increments(this.idColumn).primary()
-            table.string('label')
-        })
-    }
-
     static get jsonSchema() {
         return {
             type: 'object',
