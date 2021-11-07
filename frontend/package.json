@@ -9,8 +9,11 @@
   "dependencies": {
     "@tailwindcss/typography": "^0.4.1",
     "daisyui": "^1.14.4",
+    "luxon": "^2.0.2",
+    "vee-validate": "^4.5.5",
     "vue": "^3.2.16",
     "vue-router": "^4.0.11",
+    "vue-toasted": "^1.1.28",
     "vuex": "^4.0.2"
   },
   "devDependencies": {
