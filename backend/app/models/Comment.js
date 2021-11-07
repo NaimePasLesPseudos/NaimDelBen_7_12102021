@@ -42,19 +42,19 @@ class Comment extends BaseModel {
         return {
             posts: {
                 relation: BaseModel.BelongsToOneRelation,
+                modelClass: Post,
+                join: {
+                    from: 'comments.post_id',
+                    to: 'posts.comment_id'
+                }
+            },
+            
+            authors: {
+                relation: BaseModel.BelongsToOneRelation,
                 modelClass: User,
                 join: {
                     from: 'comments.author_id',
                     to: 'users.id'
-                }
-            },
-
-            users: {
-                relation: BaseModel.BelongsToOneRelation,
-                modelClass: Post,
-                join: {
-                    from: 'comment.post_id',
-                    to: 'post.comment_id'
                 }
             }
         }
