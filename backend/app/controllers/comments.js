@@ -4,8 +4,10 @@ const Comment = require('../models/Comment')
 exports.getAllComments = async (req, res, next) => {
     try {
         const comments = await Comment.query()
+            .where('comments.post_id', req.params.id)
+            .withGraphFetched('authors')
 
-        res.status(200).send(comments)
+        res.status(200).json(comments)
     } catch (e) {
         return next(e)
     }
@@ -13,9 +15,12 @@ exports.getAllComments = async (req, res, next) => {
 
 exports.getOneComment = async (req, res, next) => {
     try {
-        const comment = await Comment.query().findById(req.params.id)
+        const comment = await Comment.query()
+            .withGraphFetched('authors')
+            .where('comments.post_id' ,req.params.id)
+            .where('comments.id', req.params.commentId)
 
-        res.status(200).send(comment)
+        res.status(200).json(comment)
     } catch (e) {
         return next(e)
     }
@@ -31,7 +36,7 @@ exports.createComment = async (req, res, next) => {
             updated: date
         })
 
-        res.status(200).send("Bravo pour ton nouveau commentaire !")
+        res.status(200).json("Bravo pour ton nouveau commentaire !")
     } catch (e) {
         return next(e)
     }
@@ -46,7 +51,7 @@ exports.updateComment = async (req, res, next) => {
                 updated: date
             })
 
-        res.status(200).send("Commentaire modifié !")
+        res.status(200).json("Commentaire modifié !")
     } catch (e) {
         return next(e)
     }
@@ -56,7 +61,7 @@ exports.deleteOneComment = async (req, res, next) => {
     try {
         await Comment.query().findById(req.params.id).delete()
 
-        res.send("🚮 !!! Commentaire effacé !!! 🚮")
+        res.json("!!! Commentaire effacé !!!")
     } catch (e) {
         return next(e)
     }
