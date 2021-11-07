@@ -52,26 +52,27 @@ exports.up = (knex) => {
             table.datetime('updated')
         })
 
-        .createTable('reactions', (table) => {
+        .createTable('images', (table) => {
             table.increments('id').primary()
-
+            
+            table.integer('post_id')
+            .unsigned()
+            .references('id')
+            .inTable('posts')
+            .onDelete('CASCADE')
+            .index()
+            
+            table.string('url')
+        })
+        
+        .createTable('reactions', (table) => {
+            table.integer('id').primary()
             table.string('label')
         })
 
-        .createTable('images', (table) => {
+        .createTable('reactions_posts', (table) => {
             table.increments('id').primary()
 
-            table.integer('post_id')
-                .unsigned()
-                .references('id')
-                .inTable('posts')
-                .onDelete('CASCADE')
-                .index()
-
-            table.string('url')
-        })
-
-        .createTable('reactions_posts', (table) => {
             table.integer('post_id')
                 .unsigned()
                 .references('id')
@@ -93,10 +94,12 @@ exports.up = (knex) => {
                 .onDelete('CASCADE')
                 .index()
 
-            table.string('published')
+            table.datetime('published')
         })
 
         .createTable('reactions_comments', (table) => {
+            table.increments('id').primary()
+            
             table.integer('comment_id')
                 .unsigned()
                 .references('id')
@@ -132,15 +135,3 @@ return knex.schema
     .dropTableIfExists('reactions_posts')
     .dropTableIfExists('reactions_comments')
 }
-
-// at async dummyData (/Users/naimdelben/Desktop/Projets Code/OCR - Project 7/backend/scripts/database.js:40:22) { nativeError: error: insert into "posts" ("author_id", "content", "published", "title", "updated") values ($1, $2, $3, $4, $5) returning "id"
-
-
-// - value too long for type character varying(255)
-// length: 254,
-// constraint: 'posts_author_id_foreign',
-// detail: 'Key (author_id)=(1) is not present in table "users".',
-
-// - insert or update on table "posts" violates foreign key constraint "posts_author_id_foreign"
-// length: 99,
-// file: 'varchar.c',
