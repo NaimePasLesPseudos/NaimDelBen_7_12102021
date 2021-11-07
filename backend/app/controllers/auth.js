@@ -9,7 +9,6 @@ exports.signup = async (req, res, next) => {
     try {
         const pwd = await bcrypt.hash(req.body.password, 10)
 
-
         const user = await User.query().insertGraph({
             name: req.body.name,
             email: req.body.email,
@@ -21,7 +20,7 @@ exports.signup = async (req, res, next) => {
             lastLogin: new Date().toUTCString()
         })
 
-        res.send("Utilisateur enregristré !")
+        res.json("Utilisateur enregristré !")
 
     } catch (e) {
         return next(e)
@@ -31,6 +30,7 @@ exports.signup = async (req, res, next) => {
 exports.login = async (req, res, next) => {
     try {
         const user = await User.query().where('email', req.body.email)
+        
 
         if (user.length < 1) {
             return res.status(401).json({ error: "Mauvais e-mail !" })
@@ -44,22 +44,31 @@ exports.login = async (req, res, next) => {
             if (!match) {
                 return res.status(401).json({ error: "Mot de passe incorrect !" })
             }
-            User.query()
+            const lastLogin = User.query()
                 .where('email', req.body.email)
-                .patch({lastLogin: new Date().toUTCString()})
-                
+                .patch({
+                    lastLogin: new Date().toUTCString(),
+                })
+                // TODO: Corriger l'horodatage
+
             res.status(200).json({
-                user: user[0].email,
-                token: jwt.sign(
-                    {userId: user[0].email },
+                id: user[0].id,
+                name: user[0].name,
+                role: user[0].role,
+                picture: user[0].picture,
+                gender: user[0].gender,
+                lastLogin: user[0].lastLogin,
+                token: jwt.sign({ 
+                    userId: user[0].id,
+                    role: user[0].role    
+                    },
                     process.env.TOKEN_SECRET,
                     { expiresIn: '24h' }
                 )
         })
         
 
-
-        })
+        }) 
     } catch (e) {
         return next(e)
     }
