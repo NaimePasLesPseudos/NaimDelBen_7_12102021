@@ -1,3 +1,4 @@
+const { validationResult } = require('express-validator')
 const User = require('../models/User')
     , Post = require('../models/Post')
 
@@ -12,19 +13,44 @@ exports.getAllUsers = async (req, res, next) => {
 }
 
 exports.getOneUser = async (req, res, next) => {
+    const errors = validationResult(req)
+
+    if (!errors.isEmpty()) {
+        return res.status(400).json({ errors: errors.array() })
+    }
+
     try {
         const user = await User.query()
             .where('users.id', req.params.id)
 
-            res.status(200).json(user)
+            res.status(200).json(user[0])
     } catch (e) {
         return next(e)
     }
 }
 
 exports.updateOneUser = async (req, res, next) => {
+    const errors = validationResult(req)
+
+    if (!errors.isEmpty()) {
+        return res.status(400).json({ errors: errors.array() })
+    }
+
     try {
-        await User.query().findById(req.params.id).patch(req.body)
+        console.log(req.params.id);
+        const userCheck = await User.query().findById(req.params.id)
+        console.log(userCheck);
+        if (req.userId !== userCheck.id && req.role === "user") {
+            return res.status(401).json({ error: '401: User is not authorizated' })
+        }
+
+        await User.query().findById(req.params.id).patch({
+            name: req.body.user.name,
+            bio: req.body.user.bio,
+            picture: req.body.user.picture,
+            background: req.body.user.background,
+            email: req.body.user.email
+        })
         
         res.json("Profil modifié !")
     } catch (e) {
@@ -33,6 +59,12 @@ exports.updateOneUser = async (req, res, next) => {
 }
 
 exports.getOneUserWithAllPosts = async (req, res, next) => {
+    const errors = validationResult(req)
+
+    if (!errors.isEmpty()) {
+        return res.status(400).json({ errors: errors.array() })
+    }
+
     try {
         const user = await User.query()
         .where('users.id', req.params.id)
@@ -47,6 +79,12 @@ exports.getOneUserWithAllPosts = async (req, res, next) => {
 }
 
 exports.getOneUserWithOnePost = async (req, res, next) => {
+    const errors = validationResult(req)
+
+    if (!errors.isEmpty()) {
+        return res.status(400).json({ errors: errors.array() })
+    }
+
     try {
         const user = await User.query()
             .where('users.id', req.params.id)
@@ -93,6 +131,12 @@ exports.getOneUserWithOnePost = async (req, res, next) => {
 }
 
 exports.getOneUserWithAllComments = async (req, res, next) => {
+    const errors = validationResult(req)
+
+    if (!errors.isEmpty()) {
+        return res.status(400).json({ errors: errors.array() })
+    }
+
     try {
         const user = await User.query()
             .where('users.id', req.params.id)
@@ -107,6 +151,12 @@ exports.getOneUserWithAllComments = async (req, res, next) => {
 }
 
 exports.getOneUserWithAllReactions = async (req, res, next) => {
+    const errors = validationResult(req)
+
+    if (!errors.isEmpty()) {
+        return res.status(400).json({ errors: errors.array() })
+    }
+
     try {
         const user = await User.query()
             .where('users.id', req.params.id)
@@ -121,12 +171,28 @@ exports.getOneUserWithAllReactions = async (req, res, next) => {
 }
 
 exports.getOneUserHistory = async (req, res, next) => {
+    const errors = validationResult(req)
+
+    if (!errors.isEmpty()) {
+        return res.status(400).json({ errors: errors.array() })
+    }
+
     try {
-        // TODO: créer le controller avec toutes les tables
         const user = await User.query()
             .where('users.id', req.params.id)
-            .join('posts', 'users.id', 'posts.author_id')
-            .select('users.name', 'users.email', 'posts.title', 'posts.id')
+            .select([
+                'users.*',
+                User.relatedQuery('posts')
+                    .count()
+                    .where('posts.author_id', req.params.id)
+                    .as('NumberOfPosts'),
+                User.relatedQuery('comments')
+                    .count()
+                    .where('comments.author_id', req.params.id)
+                    .as('NumberOfComments'),
+            ])
+            .withGraphFetched('posts')
+            .withGraphFetched('comments', 'users.id', 'comments.author_id')
 
         res.json(user)
     } catch (e) {
@@ -135,7 +201,17 @@ exports.getOneUserHistory = async (req, res, next) => {
 }
 
 exports.deleteOneUser = async (req, res, next) => {
+    const errors = validationResult(req)
+
+    if (!errors.isEmpty()) {
+        return res.status(400).json({ errors: errors.array() })
+    }
+
     try {
+        const user = await User.query().findById(req.params.id)
+        if (req.userId !== userCheck.id && req.role === "user") {
+            return res.status(401).json({ error: '401: User is not authorizated' })
+        }
         await User.query().findById(req.params.id).delete()
 
         res.json("🚮 !!! Profil détruit !!! 🚮")
