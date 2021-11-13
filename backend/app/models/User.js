@@ -40,6 +40,8 @@ class User extends BaseModel {
     static get relationMappings() {
         const Post = require('./Post')
             , Comment = require('./Comment')
+            , ReactPost = require('./Reactions_posts')
+            , ReactComment = require('./Reactions_comments')
             , React = require('./Reaction')
 
         return {
@@ -58,6 +60,24 @@ class User extends BaseModel {
                 join: {
                     from: 'users.id',
                     to: 'comments.author_id'
+                }
+            },
+
+            userReactPosts: {
+                relation: BaseModel.HasManyRelation,
+                modelClass: ReactPost,
+                join: {
+                    from: 'users.id',
+                    to: 'reactions_posts.user_id'
+                }
+            },
+
+            userReactComments: {
+                relation: BaseModel.HasManyRelation,
+                modelClass: ReactComment,
+                join: {
+                    from: 'users.id',
+                    to: 'reactions_comments.user_id'
                 }
             },
 
