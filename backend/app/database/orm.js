@@ -1,6 +1,7 @@
 const Knex = require('knex')
     , knexConfig = require('../config/knexfile')
     , { Model } = require('objection')
+    , visibilityPlugin = require('objection-visibility').default;
 
 // Heroku DB connection
 const Db = Knex(knexConfig.default)
@@ -8,7 +9,7 @@ const Db = Knex(knexConfig.default)
 
 Model.knex(Db)
 
-class BaseModel extends Model {
+class BaseModel extends visibilityPlugin(Model) {
     static get idColumn() {
         return PRIMARY_KEY
     }
