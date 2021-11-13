@@ -1,12 +1,28 @@
+const { validationResult } = require('express-validator')
+
 const User = require('../models/User')
     , jwt = require('jsonwebtoken')
     , bcrypt = require('bcrypt')
     , dotenv = require('dotenv')
+    , date = new Date().toUTCString()
 
 dotenv.config()
 
 exports.signup = async (req, res, next) => {
+    const errors = validationResult(req)
+
+    if (!errors.isEmpty()) {
+        return res.status(400).json({ errors: errors.array() })
+    }
+
     try {
+        const checkEmail = User.query()
+            .where('email', req.body.email)
+            
+        if ((await checkEmail).length > 0) {
+            return res.status(400).json({message: "Email déjà utilisé"})
+        }
+
         const pwd = await bcrypt.hash(req.body.password, 10)
 
         const user = await User.query().insertGraph({
@@ -16,8 +32,8 @@ exports.signup = async (req, res, next) => {
             role: "user",
             picture: "https://placekitten.com/400/400",
             background: "http://placeimg.com/600/600/arch",
-            registred: new Date().toUTCString(),
-            lastLogin: new Date().toUTCString()
+            registred: date,
+            lastLogin: date
         })
 
         res.json("Utilisateur enregristré !")
@@ -28,6 +44,12 @@ exports.signup = async (req, res, next) => {
 }
 
 exports.login = async (req, res, next) => {
+    const errors = validationResult(req)
+
+    if (!errors.isEmpty()) {
+        return res.status(400).json({ errors: errors.array() })
+    }
+
     try {
         const user = await User.query().where('email', req.body.email)
         
@@ -47,9 +69,8 @@ exports.login = async (req, res, next) => {
             const lastLogin = User.query()
                 .where('email', req.body.email)
                 .patch({
-                    lastLogin: new Date().toUTCString(),
+                    lastLogin: date,
                 })
-                // TODO: Corriger l'horodatage
 
             res.status(200).json({
                 id: user[0].id,
@@ -60,13 +81,12 @@ exports.login = async (req, res, next) => {
                 lastLogin: user[0].lastLogin,
                 token: jwt.sign({ 
                     userId: user[0].id,
-                    role: user[0].role    
+                    role: user[0].role
                     },
                     process.env.TOKEN_SECRET,
                     { expiresIn: '24h' }
                 )
         })
-        
 
         }) 
     } catch (e) {
