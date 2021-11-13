@@ -2,21 +2,72 @@ const express = require('express')
     , router = express.Router()
     , auth = require('../middleware/auth')
     , userCtrl = require('../controllers/user')
+    , { check } = require('express-validator')
 
 router.get('/', auth.z, userCtrl.getAllUsers)
 
-router.get('/:id', auth.z, userCtrl.getOneUser)
+router.get(
+    '/:id', 
+    auth.z,
+    check('id').isNumeric(),
+    userCtrl.getOneUser)
 
-router.get('/:id/posts', auth.z, userCtrl.getOneUserWithAllPosts)
+router.get(
+    '/:id/posts', 
+    auth.z, 
+    check('id').isNumeric(),
+    userCtrl.getOneUserWithAllPosts
+    )
 
-router.get('/:id/comments', auth.z, userCtrl.getOneUserWithAllComments)
+router.get(
+    '/:id/post/:post_id', 
+    auth.z, 
+    check('id').isNumeric(),
+    userCtrl.getOneUserWithOnePost
+    )
 
-router.get('/:id/reactions', auth.z, userCtrl.getOneUserWithAllReactions)
+router.get(
+    '/:id/comments',
+    auth.z, 
+    check('id').isNumeric(),
+    userCtrl.getOneUserWithAllComments
+    )
 
-router.get('/:id/history', auth.z, userCtrl.getOneUserHistory)
+router.get(
+    '/:id/reactions',
+    auth.z, 
+    check('id').isNumeric(),
+    userCtrl.getOneUserWithAllReactions
+    )
 
-router.patch('/:id', auth.z, userCtrl.updateOneUser)
+router.get(
+    '/:id/history',
+    auth.z, 
+    check('id').isNumeric(),
+    userCtrl.getOneUserHistory
+    )
 
-router.delete('/:id', auth.z, userCtrl.deleteOneUser)
+router.patch(
+    '/:id', 
+    auth.z, 
+    check('id').isNumeric(),
+    check('name').isAscii().optional(),
+    check('email').isEmail().optional(),
+    check('role').isAlpha().optional(),
+    check('bio').isAscii().optional(),
+    check('mobile').isAscii().optional(),
+    check('picture').isURL().optional(),
+    check('background').isURL().optional(),
+    check('gender').isAlpha().optional(),
+    check('birthday').isAscii().optional(),
+    userCtrl.updateOneUser
+    )
+
+router.delete(
+    '/:id', 
+    auth.z, 
+    check('id').isNumeric(),
+    userCtrl.deleteOneUser
+    )
 
 module.exports = router
