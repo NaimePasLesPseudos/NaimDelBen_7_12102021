@@ -84,7 +84,7 @@ exports.getOnePost = async (req, res, next) => {
                 }
             })
 
-        res.status(200).json(post)
+        res.status(200).json(post[0])
     } catch (e) {
         return next(e)
     }
@@ -93,7 +93,7 @@ exports.getOnePost = async (req, res, next) => {
 exports.createPost = async (req, res, next) => {
     try {
         const post = await Post.query().insertGraph({
-            author_id: req.body.author_id,
+            author_id: req.userId,
             title: req.body.title,
             content: req.body.content,
             published: date,
@@ -108,11 +108,17 @@ exports.createPost = async (req, res, next) => {
 
 exports.updatePost = async (req, res, next) => {
     try {
+        const userPost = await Post.query().findById(req.params.id)
+
+        if (req.userId !== userPost.author_id && req.role === "user") {
+            return res.status(401).json({ error: '401: User is not authorizated' })
+        }
+
         const post = await Post.query()
             .findById(req.params.id)
             .patch({
-                title: req.body.title,
-                content: req.body.content,
+                title: req.body.post.title,
+                content: req.body.post.content,
                 updated: date
             })
 
@@ -124,6 +130,12 @@ exports.updatePost = async (req, res, next) => {
 
 exports.deleteOnePost = async (req, res, next) => {
     try {
+        const userPost = await Post.query().findById(req.params.id)
+        
+        if (req.userId !== userPost.author_id && req.role === "user") {
+            return res.status(401).json({ error: '401: User is not authorizated' })
+        }
+
         await Post.query().findById(req.params.id).delete()
 
         res.json("!!! Article effacé !!!")
