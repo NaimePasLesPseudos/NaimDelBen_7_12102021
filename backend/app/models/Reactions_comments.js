@@ -5,19 +5,6 @@ class Reaction_Comment extends BaseModel {
         return 'reactions_posts'
     }
 
-    static async create() {
-        const db = this.knex()
-
-        if (await db.schema.hasTable(this.tableName)) return
-
-        await db.schema.createTable(this.tableName, table => {
-            table.integer('comment_id')
-            table.integer('reaction_id')
-            table.integer('user_id')
-            table.string('published')
-        })
-    }
-
     static get jsonSchema() {
         return {
             type: 'object',
@@ -67,3 +54,5 @@ class Reaction_Comment extends BaseModel {
         }
     }
 }
+
+module.exports = Reaction_Comment
