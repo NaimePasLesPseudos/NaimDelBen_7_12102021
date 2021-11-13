@@ -1,38 +1,137 @@
-import { ref, watchEffect } from "vue";
+import { reactive, readonly, ref, watchEffect } from "vue";
 import api from "../services/api";
 
-export const Status = {
-    IDLE: "IDLE",
-    RUNNING: "RUNNING",
-    SUCCESS: "SUCCESS",
-    ERROR: "ERROR",
-};
-
 export async function searchUser(id) {
-    let status = ref(Status.IDLE)
-    let user = ref(await fetchUser())
-    watchEffect(() => console.log(status.value))
+    let user = reactive(await fetchUser())
 
     async function fetchUser() {
-        status.value = Status.RUNNING
         try {
             const res = await api.getUser(id)
-            if (!res.ok) {
-                status.value = Status.ERROR
-            }
+        
             console.log(res)
             const json = await res.json()
-            status.value = Status.SUCCESS
-            return json
+            console.log(json);
+            return json[0]
         } catch (err) {
-            status.value = Status.ERROR
             throw new Error(err);
         }
     }
 
     return {
         user,
-        status,
-        Status,
+    }
+}
+
+export async function searchUserWithHistory(id) {
+    let user = reactive(await fetchUser())
+
+    async function fetchUser() {
+        try {
+            const res = await api.getUserWithHistory(id)
+            
+            console.log(res)
+            const json = await res.json()
+            console.log(json);
+            return json[0]
+        } catch (err) {
+            throw new Error(err);
+        }
+    }
+
+    return {
+        user,
+    }
+}
+
+export async function searchMewithOnePost(user_id, post_id) {
+    let me = ref(await fetchMe())
+
+    async function fetchMe(){
+        try {
+            const res = await api.getMeWithOnePost(user_id, post_id)
+            console.log(res)
+            const json = await res.json()
+            return json
+        } catch (err) {
+            throw new Error(err);
+        }
+    }
+        
+    return {
+        me
+    }
+}
+
+export async function updateMe(id, user) {
+    let updateMe = reactive(await fetchMe())
+
+    async function fetchMe(){
+        try {
+            const res = await api.updateUser(id, user)
+            const json = await res.json()
+            return json
+        } catch (err) {
+            throw new Error(err)
+        }
+    }
+        
+    return {
+        updateMe
+    }
+}
+
+export async function destroyUser(id) {
+    let destroy = ref(await deleteUser())
+
+    async function deleteUser() {
+        try {
+            const res = await api.deleteUser(id)
+            if (!res.ok) {
+                return console.error("erreur lors de la suppression !");
+            }
+            console.log(res)
+            const json = await res.json()
+            return json
+        } catch (err) {
+            throw new Error(err);
+        }
+    }
+}
+
+
+export function useUserRepository() {
+    const user = reactive({})
+        , loading = ref(false)
+
+    async function searchUser(id) {
+        loading.value = true
+
+        try {
+            const res = await api.getUser(id)
+
+            const userContent = await res.json()
+            Object.assign(user, userContent)
+
+        } catch (err) {
+            throw new Error(err)
+        }
+
+        loading.value = false
+    }
+
+    async function updateMe(id, user) {
+        try {
+            const res = await api.updateUser(id, user)
+            
+        } catch (err) {
+            throw new Error(err)
+        }
+    }
+
+    return {
+        user,
+        loading: readonly(loading),
+        searchUser,
+        updateMe
     }
 }
