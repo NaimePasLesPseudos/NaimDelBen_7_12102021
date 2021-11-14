@@ -14,7 +14,7 @@ async function dummyData() {
         const hash = await bcrypt.hash(superPassword, 10) 
 
         const user = await User.query().insertGraph({
-            name: "l\'équipe communication",
+            name: "L\'équipe communication",
             email: "communication@groupomania.com",
             role: "admin",
             bio: 'En charge de la communication de l\'entreprise',
