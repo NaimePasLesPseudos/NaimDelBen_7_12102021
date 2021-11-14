@@ -1,0 +1,2 @@
+const is_localhost = location.hostname === 'localhost' || location.hostname === '127.0.0.1'
+export const url = is_localhost ? 'http://localhost:5001/v1/' : 'https://616961c209e030001712c33c.mockapi.io/v1/' // TODO : Env var
