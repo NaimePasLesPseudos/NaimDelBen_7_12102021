@@ -1,6 +1,6 @@
 <template>
 
-<div class="navbar mb-2 shadow-lg bg-neutral text-neutral-content rounded-box mx-5">
+<div class="navbar mb-2 shadow-lg bg-neutral text-neutral-content rounded-box mx-5 flex justify-between">
 
     <router-link to="/" class=" px-2 mx-2 tooltip tooltip-bottom" data-tip="Accueil">
         <span class="text-lg font-bold">
@@ -8,68 +8,66 @@
         </span>
     </router-link> 
 
-    <div class="flex-1 md:w-3/5">
-        <div class="form-control">
-            <input type="text" placeholder="Recherche" class="input input-ghost">
+    <div class="px-2 mx-2">
+        <div class="items-stretch flex">
+            <router-link 
+                :to="'/user/' + currentUser.id"
+                class="btn btn-ghost btn-sm rounded-btn" > 
+                Mon Profil
+            </router-link>
+            <router-link 
+                to="/settings"
+                class="btn btn-ghost btn-sm rounded-btn" > 
+                Paramètres
+            </router-link>
+            <label 
+                @click.prevent="logout"
+                class="btn btn-ghost btn-sm rounded-btn" > 
+                Déconnexion
+            </label>
         </div>
+    </div> 
+
+    <!-- <div class="flex-none">
         <button class="btn btn-square btn-ghost">
-            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" class="inline-block w-6 h-6 stroke-current">             
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>             
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" class="inline-block w-6 h-6 stroke-current">              
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"></path>            
             </svg>
         </button>
-    </div>
-
-    <div class=" dropdown dropdown-end">
-        <div tabindex="0" class="">
-            <!-- <div >
-                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" class="inline-block w-6 h-6 stroke-current">           
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M4 6h16M4 12h16M4 18h16"></path>
-                </svg>
-            </div> -->
-            <div class="avatar">
-                <div class="rounded-full w-10 h-10 m-1">
-                    <img :src=" user.avatar ">
-                </div>
-            </div>
-            
-            <ul tabindex="0" class="p-2 shadow menu dropdown-content bg-primary rounded-box w-56">
-                <div class="text-center"> {{ user.name }}</div>
-                <li >
-                    <router-link :to="'/user/' + user.id">Mon profil</router-link>
-                </li> 
-                <li >
-                    <router-link to="/settings">Paramètres</router-link>
-                </li> 
-                <li >
-                    <router-link to="/likes">Mes favoris</router-link>
-                </li> 
-                <li >
-                    <label class="cursor-pointer label">
-                        <span class="label-text">Mode Sombre</span> 
-                        <input type="checkbox"  class="toggle toggle-secondary">
-                    </label>
-                </li> 
-                <li >
-                    <router-link to="/logout">Déconnexion</router-link>
-                </li> 
-            </ul>
-        </div>
-    </div>
+    </div> 
+    <div class="flex-none">
+        <button class="btn btn-square btn-ghost">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" class="inline-block w-6 h-6 stroke-current">             
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>             
+            </svg>
+        </button>
+    </div> -->
 
 </div>
 
 </template>
 
 <script>
-import { searchUser } from "@composable/useUser";
-import { useRoute } from 'vue-router'
+import { computed } from 'vue'
+import { useRouter } from 'vue-router'
+import { useStore } from 'vuex'
 
 export default {
     name: "MeInHeader",
     async setup() {
-        const route = useRoute()
-        const { user, status, Status } = await searchUser(8)
-        return { user, status, Status }
+        const route = useRouter()
+        const store = useStore()
+        const currentUser = computed(() => store.state.auth.user)
+        
+        function logout() {
+            store.dispatch('auth/logout')
+            route.replace('/login')
+        }
+        
+        return {
+            logout,
+            currentUser
+            }
     },
 }
 </script>
