@@ -9,30 +9,53 @@ import User from '@views/User.vue'
 import Post from '@views/Post.vue'
 import Likes from '@views/Likes.vue'
 import Lost from '@views/404.vue'
+import Submit from '@views/Submit.vue'
+import Modify from '@views/Modify.vue'
+import Search from '@views/Search.vue'
 
-const routes = [
-    {
-        path: '/',
-        name: 'Layout',
-        component: Layout,
-        children: [
-            {path: '', name: 'Home', component: Home},
-            {path: '/about', name: 'About', component: About},
-            {path: '/settings', name: 'Settings', component: Settings},
-            {path: '/user/:id', name: 'User', component: User},
-            {path: '/post/:id', name: 'Post', component: Post},
-            {path: '/likes', name: 'Likes', component: Likes},
-            {path: '/lost', name: 'Lost', component: Lost},
-        ]
-    },
-    {path: '/login', name: 'Login', component: Login},
-    // {path: '/logout', name: 'Logout', component: Logout},
-    {path: '/signup', name: 'Signup', component: Signup},
-]
+const publicRoute = ['Login', 'Signup'],
+    routes = [
+        {
+            path: '/',
+            name: 'Layout',
+            component: Layout,
+            children: [
+                {path: '', name: 'Home', component: Home},
+                {path: '/about', name: 'About', component: About},
+                {path: '/settings', name: 'Settings', component: Settings},
+                {path: '/user/:id', name: 'User', component: User},
+                {path: '/post/:id', name: 'Post', component: Post},
+                {path: '/likes', name: 'Likes', component: Likes},
+                {path: '/lost', name: 'Lost', component: Lost},
+                {path: '/submit', name: 'Submit', component: Submit},
+                {path: '/search', name: 'Search', component: Search},
+                {path: '/modify/:id', name: 'Modify', component: Modify},
+            ]
+        },
+        {path: '/login', name: 'Login', component: Login},
+        {path: '/signup', name: 'Signup', component: Signup},
+    ]
 
-const router = createRouter({
-    history: createWebHistory(),
-    routes
-})
+export function createRouterWithStore(store) {
 
-export default router
+    const router = createRouter({
+        history: createWebHistory(),
+        routes
+    })
+    
+    router.beforeEach((to, from, next) => {
+        if (publicRoute.includes(to.name)) {
+            next()
+            return
+        }
+    
+        if (!store.getters['auth/isConnected']) {
+            router.replace({ name: 'Login' })
+            return
+        }
+    
+        next()
+    })
+
+    return router
+}
