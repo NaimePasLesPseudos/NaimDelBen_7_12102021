@@ -8,9 +8,7 @@ export async function searchUser(id) {
         try {
             const res = await api.getUser(id)
         
-            console.log(res)
             const json = await res.json()
-            console.log(json);
             return json[0]
         } catch (err) {
             throw new Error(err);
@@ -29,9 +27,7 @@ export async function searchUserWithHistory(id) {
         try {
             const res = await api.getUserWithHistory(id)
             
-            console.log(res)
             const json = await res.json()
-            console.log(json);
             return json[0]
         } catch (err) {
             throw new Error(err);
@@ -49,7 +45,6 @@ export async function searchMewithOnePost(user_id, post_id) {
     async function fetchMe(){
         try {
             const res = await api.getMeWithOnePost(user_id, post_id)
-            console.log(res)
             const json = await res.json()
             return json
         } catch (err) {
@@ -89,7 +84,6 @@ export async function destroyUser(id) {
             if (!res.ok) {
                 return console.error("erreur lors de la suppression !");
             }
-            console.log(res)
             const json = await res.json()
             return json
         } catch (err) {
