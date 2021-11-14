@@ -209,7 +209,8 @@ exports.deleteOneUser = async (req, res, next) => {
 
     try {
         const user = await User.query().findById(req.params.id)
-        if (req.userId !== userCheck.id && req.role === "user") {
+
+        if (req.userId !== user.id && req.role === "user") {
             return res.status(401).json({ error: '401: User is not authorizated' })
         }
         await User.query().findById(req.params.id).delete()
