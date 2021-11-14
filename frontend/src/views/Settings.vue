@@ -140,18 +140,19 @@
 </template>
 
 <script>
-import UserSettingsProfile from '@components/UserSettingsProfile.vue'
 import { useUserRepository } from '@composable/useUser'
 import { useStore } from 'vuex'
 import { useRouter } from 'vue-router'
+import { useToast } from 'vue-toastification'
 import { computed, toRaw } from 'vue'
 
 export default {
-    components: { UserSettingsProfile },
+    components: { },
     name: "Settings",
     async setup() {
         const store = useStore()
             , router = useRouter()
+            , toast = useToast()
             , currentUserId = computed(() => store.getters['auth/userId'])
             , { user, loading, searchUser: findMe, updateMe } = useUserRepository()
             
@@ -163,6 +164,7 @@ export default {
             try {
                 console.log(me);
                 await updateMe(currentUserId.value.id, me)
+                toast.success('Profil modifié avec succès !')
                 router.push({path: `/user/${currentUserId.value.id}`})
             } catch (e) {
                 console.log(e)
