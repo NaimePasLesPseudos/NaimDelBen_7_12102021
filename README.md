@@ -4,14 +4,15 @@
 ## Use
 ### Install in local machine 
 1. Download or clone this repo.
-2. Open 2 terminals
-3. For the Frontend, open the first terminal : 
+2. Transform '.env sample' in '.env' and insert you're server
+3. Open 2 terminals
+4. For the Frontend, open the first terminal : 
 ```bash
 cd frontend/
 npm install
 npm run dev
 ```
-4. For the Backend, open the second terminal :
+5. For the Backend, open the second terminal :
 ```bash
 cd backend/
 npm install
