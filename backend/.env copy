@@ -1,0 +1,10 @@
+DB_URI = URI
+DB_HOST = host
+DB_POST = post
+DB_DB = db
+DB_USER = user
+DB_PASSWORD = password
+
+PORT = 5005
+
+TOKEN_SECRET = TOKEN_SECRET
