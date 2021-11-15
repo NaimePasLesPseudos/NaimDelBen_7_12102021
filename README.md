@@ -5,18 +5,22 @@
 ### Install in local machine 
 1. Download or clone this repo.
 2. Transform '.env sample' in '.env' and insert you're server
-3. Open 2 terminals
-4. For the Frontend, open the first terminal : 
+3. Install global nodemon
 ```bash
-cd frontend/
-npm install
-npm run dev
+npm install -g nodemon
 ```
+4. Open 2 terminals
 5. For the Backend, open the second terminal :
 ```bash
 cd backend/
 npm install
 nodemon server
+```
+6. For the Frontend, open the first terminal : 
+```bash
+cd frontend/
+npm install
+npm run dev
 ```
 
 ## Stack
