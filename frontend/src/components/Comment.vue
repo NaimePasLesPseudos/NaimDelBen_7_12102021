@@ -77,8 +77,6 @@ export default {
             , user = computed(() => store.state.auth.user)
             , { deleteComment } = useCommentRepository()
             
-console.log(actualPost);
-
         async function removeComment(id) {
             try {
                 await deleteComment(id)

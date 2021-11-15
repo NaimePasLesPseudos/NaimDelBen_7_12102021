@@ -105,7 +105,6 @@ export default {
         }
         async function newReaction(react_id, post_id) {
             try {
-                console.log('Réaction numéro : ' + react_id + post_id + user.value.id);
                 await addReaction(react_id, post_id, user.value.id)
                 router.go(router.currentRoute)
             } catch (e) {

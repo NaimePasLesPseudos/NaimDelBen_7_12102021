@@ -7,9 +7,6 @@ export async function searchAllPosts() {
     async function fetchPosts() {
         try {
             const res = await api.getAllPosts()
-            if (!res.ok) {
-            }
-            console.log(res)
             const json = await res.json()
             return json
         } catch (err) {
@@ -28,9 +25,6 @@ export async function searchPost(id) {
     async function fetchPost() {
         try {
             const res = await api.getPost(id)
-            if (!res.ok) {
-            }
-            console.log(res)
             const json = await res.json()
             return json
         } catch (err) {
@@ -49,9 +43,6 @@ export async function addPost(content, title, author) {
     async function addPost() {
         try {
             const res = await api.createPost(content, title, author)
-            if (!res.ok) {
-            }
-            console.log(res)
             const json = await res.json()
             return json
         } catch (err) {
@@ -65,16 +56,11 @@ export async function addPost(content, title, author) {
 }
 
 export async function deletePost(id) {
-    console.log("Bonjour API");
     const posts = ref(await suppPost())
 
     async function suppPost() {
         try {
-            console.log("coucou API");
             const res = await api.deletePost(id)
-            if (!res.ok) {
-            }
-            console.log(res)
             const json = await res.json()
             return json
         } catch (err) {
@@ -97,7 +83,7 @@ export function usePostRepository() {
 
         try {
             const res = await api.getAllPosts()
-            
+            posts.value = await res.json()
         } catch (err) {
             throw new Error(err)
         }

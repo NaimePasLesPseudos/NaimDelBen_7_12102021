@@ -10,7 +10,6 @@ export async function searchReactions() {
             const res = await api.getAllPosts()
             if (!res.ok) {
             }
-            console.log(res)
             const json = await res.json()
             return json
         } catch (err) {
@@ -29,9 +28,6 @@ export async function addReaction(id, post, user) {
     async function newReact() {
         try {
             const res = await api.addReaction(id, post, user)
-            if (!res.ok) {
-            }
-            console.log(res)
             const json = await res.json()
             return json
         } catch (err) {
@@ -49,11 +45,7 @@ export async function deleteReaction(id) {
 
     async function suppPost() {
         try {
-            console.log("coucou API");
             const res = await api.deletePost(id)
-            if (!res.ok) {
-            }
-            console.log(res)
             const json = await res.json()
             return json
         } catch (err) {
