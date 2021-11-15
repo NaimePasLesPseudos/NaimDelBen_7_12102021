@@ -140,7 +140,7 @@
 </template>
 
 <script>
-import { useUserRepository } from '@composable/useUser'
+import { useUserRepository, destroyUser } from '@composable/useUser'
 import { useStore } from 'vuex'
 import { useRouter } from 'vue-router'
 import { useToast } from 'vue-toastification'
@@ -162,7 +162,6 @@ export default {
 
         async function updateProfile() {
             try {
-                console.log(me);
                 await updateMe(currentUserId.value.id, me)
                 toast.success('Profil modifié avec succès !')
                 router.push({path: `/user/${currentUserId.value.id}`})
@@ -171,11 +170,23 @@ export default {
             }
         }
 
+        async function deleteProfile() {
+            try {
+                await destroyUser(currentUserId.value.id)
+                toast.success('Suppression du compte réussie !')
+                await store.dispatch("auth/logout")
+                router.go('/')
+            } catch (error) {
+                return error
+            }
+        }
+
         return {
             user,
             loading,
             currentUserId,
             updateProfile,
+            deleteProfile,
             }
     },
 }

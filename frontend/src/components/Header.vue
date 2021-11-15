@@ -61,7 +61,7 @@ export default {
         
         function logout() {
             store.dispatch('auth/logout')
-            route.replace('/login')
+            route.go('/login')
         }
         
         return {

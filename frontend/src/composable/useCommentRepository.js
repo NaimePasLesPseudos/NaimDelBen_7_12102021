@@ -38,24 +38,6 @@ export async function createComment(content, post, author) {
     }
 }
 
-// export async function deleteComment(id) {
-//     const comments = ref(await suppComment())
-
-//     async function suppComment() {
-//         try {
-//             const res = await api.deleteComment(id)
-//             const json = await res.json()
-//             return json
-//         } catch (err) {
-//             throw new Error(err);
-//         }
-//     }
-
-//     return {
-//         comments,
-//     }
-// }
-
 export function useCommentRepository() {
 
     const comments = ref([])
@@ -67,7 +49,6 @@ export function useCommentRepository() {
         try {
             const res = await api.getAllComments(id)
             comments.value = await res.json()
-            console.log(comments);
         } catch (err) {
             throw new Error(err)
         }
@@ -89,12 +70,18 @@ export function useCommentRepository() {
     async function deleteComment(id){
         try {
             const res = await api.deleteComment(id)
-            // TODO: Fix le filtre
-            comments.value = comments.value.filter(item => item.value.id !== id)
-            
+            deleteCommentLocal(id)
         } catch (err) {
             throw new Error(err)
         }
+    }
+
+    async function deleteCommentLocal(id) {
+        const index = comments.value.findIndex(item => item.id === id)
+
+        if (index === -1) return
+
+        comments.value.splice(index, 1)
     }
 
     return {
@@ -102,6 +89,7 @@ export function useCommentRepository() {
         loading: readonly(loading),
         searchComments,
         createComment,
-        deleteComment
+        deleteComment,
+        deleteCommentLocal,
     }
 }

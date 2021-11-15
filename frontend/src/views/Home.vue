@@ -29,22 +29,25 @@
             :hearts="post.NumberOfHearts"
             :key="post.id"
             :id="post.id"
+            @deleted="onPostDeleted"
         > </Post>
     </div>
 
 </div>
 </template>
 
-<script >
-import Post from '@components/post.vue'
-import { searchAllPosts } from '@composable/usePostRepository'
+<script>
+import Post from '@components/Post.vue'
+import { usePostRepository } from '@composable/usePostRepository'
 import { dateTime } from '@composable/date'
 
 export default {
     components: { Post },
     async setup() {
         
-        const { posts, status, Status } = await searchAllPosts()
+        const { posts, fetchPosts, deleteLocalPost, loading } = usePostRepository()
+
+        fetchPosts()
 
         function dateReturn(dateValue) {
             try {
@@ -55,9 +58,15 @@ export default {
             }
         }
 
+        function onPostDeleted(id) {
+            deleteLocalPost(id)
+        }
+
         return {
             posts,
             dateReturn,
+            loading,
+            onPostDeleted,
         }
     },
 }

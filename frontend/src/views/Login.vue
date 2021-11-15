@@ -46,7 +46,7 @@
                             placeholder="Mot de passe :"
                             class="input input-bordered"
                         > 
-                         <div v-if="passwordError" class="alert alert-warning mt-2">
+                        <div v-if="passwordError" class="alert alert-warning mt-2">
                             <span>{{passwordError}}</span>
                         </div>
                     </div> 
@@ -132,9 +132,8 @@ export default {
                         email: email.value, 
                         password: password.value
                     }
-                    console.log(email.value, password.value);
                     await store.dispatch("auth/signIn", userSign)
-                    router.push("/")
+                    router.go("/")
                 } catch (error) {
                     console.log(error)
                 }

@@ -93,10 +93,10 @@
 
 <script >
 import Footer from '@components/Footer.vue'
-import { signup } from '@composable/connect.js'
-import { computed, reactive, ref, toRaw } from 'vue'
+import { computed } from 'vue'
 import { useRouter } from 'vue-router'
 import { useStore } from 'vuex'
+import { useToast } from 'vue-toastification'
 import { useField, useForm } from 'vee-validate'
 import * as yup from 'yup'
 
@@ -106,6 +106,7 @@ export default {
     setup() {
         const store = useStore()
             , route = useRouter()
+            , toast = useToast()
 
         const loggedIn = computed(() => store.state.auth.status.loggedIn)
 
@@ -148,12 +149,11 @@ export default {
                         email: email.value, 
                         password: password.value
                     }
-                    console.log(user);
-                    console.log(name.value, email.value, password.value);
                     await store.dispatch("auth/register", user)
-                    // await signup(name.value, email.value, password.value)
-                    // route.push("/")
+                    toast.success('Inscription réussie ! Veuillez vous connecter pour finaliser.')
+                    route.push("/login")
                 } catch (error) {
+                    toast.error('Une erreur s\'est produite !')
                     console.log(error)
                 }
             }

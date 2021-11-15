@@ -1,4 +1,4 @@
-[<template>
+<template>
 
 <div class="flex-col mx-10">
     <Post 
@@ -13,6 +13,7 @@
         :rofls="post.NumberOfRofls"
         :hearts="post.NumberOfHearts"
         :id="post.id"
+        @deleted="onPostDeleted"
     > </Post>
 
     <div class="comment border-2 bg-base-100 p-2 mb-5 rounded-box ml-5">
@@ -29,7 +30,7 @@
         </div>
 
         <span v-if="loading">
-            CHARGEMENT DES COMMENTAIRES...........
+            CHARGEMENT DES COMMENTAIRES...
         </span>
 
         <Comment
@@ -46,6 +47,7 @@
                 :hearts="comment.NumberOfHearts"
                 :id="comment.id"
                 :key="comment.id"
+                @deleted="onCommentDeleted"
         > </Comment>
     </div>
 </div>
@@ -53,7 +55,7 @@
 </template>
 
 <script>
-import Post from '@components/post.vue'
+import Post from '@components/Post.vue'
 import Comment from '@components/Comment.vue'
 import { searchPost } from '@composable/usePostRepository'
 import { useCommentRepository } from '@composable/useCommentRepository'
@@ -68,9 +70,10 @@ export default {
     components: { Post, Comment },
     async setup() {
         const route = useRoute()
+            , router = useRouter()
             , store = useStore()
             , toast = useToast()
-            , { comments, loading, createComment: addComment, searchComments: findComments } = useCommentRepository()
+            , { comments, loading, createComment: addComment, deleteCommentLocal, searchComments: findComments } = useCommentRepository()
             , actualPost = parseInt(route.params.id)
             , author = computed(() => store.getters['auth/userId'])
             , content = ref("")
@@ -82,9 +85,11 @@ export default {
             try {
                 await addComment(content.value, actualPost, author.value.id)
             } catch (err) {
-                toast.error('Retente, ça fonctionne pas.')
+                toast.error('Retentez, ça fonctionne pas.')
                 return
             }
+
+            content.value = ""
             toast.success("Commentaire rajouté.")
         }
 
@@ -97,10 +102,20 @@ export default {
             }
         }
 
+        function onPostDeleted() {
+            router.replace('/')
+        }
+
+        function onCommentDeleted(id) {
+            deleteCommentLocal(id)
+        }
+
         return { 
             post,
             comments,
             addNewComment,
+            onPostDeleted,
+            onCommentDeleted,
             dateReturn,
             loading,
             content,
@@ -109,5 +124,3 @@ export default {
     }
 }
 </script>
-
-

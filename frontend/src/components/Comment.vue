@@ -55,6 +55,7 @@ import { useToast } from 'vue-toastification'
 
 export default {
     name: "Comments",
+    emits: ['deleted'],
     props: {
         date: { required: true },
         updateDate: { required: true },
@@ -68,7 +69,7 @@ export default {
         rofls: { type: String, default: "0" },
         hearts: { type: String, default: "0" }
     },
-    setup() {
+    async setup(props, { emit }) {
         const router = useRouter()
             , route = useRoute()
             , store = useStore()
@@ -81,24 +82,17 @@ export default {
             try {
                 await deleteComment(id)
                 toast.success('Commentaire supprimé !')
-                // router.push({path: `/post/${actualPost}`})
+                emit('deleted', id)
             } catch (error) {
                 toast.error('Retente, ça fonctionne pas.')
                 return
             }
         }
 
-            // , commentArea = ref(false)
-            // , toggleCommentArea = () => {
-            //     commentArea.value = !commentArea.value
-            // }
-        
         return {
             user,
             actualPost,
-            // commentArea,
-            // toggleCommentArea,
-            removeComment
+            removeComment,
         }
     }, 
 }

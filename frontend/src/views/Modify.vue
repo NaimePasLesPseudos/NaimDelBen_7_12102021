@@ -54,24 +54,23 @@ export default {
 
         findOnePost(actualPost)
 
-    let data = toRaw(post)
+        let data = toRaw(post)
 
-    async function updateThisPost() {
-        try {
-            await updatePost(actualPost, data)
-            toast.success('Article modifié !')
-            router.push({path: `/post/${actualPost}`})
-        } catch (err) {
-            toast.error('Retente, ça fonctionne pas.')
-            return
+        async function updateThisPost() {
+            try {
+                await updatePost(actualPost, data)
+                toast.success('Article modifié !')
+                router.push({path: `/post/${actualPost}`})
+            } catch (err) {
+                toast.error('Retente, ça fonctionne pas.')
+                return
+            }
         }
-    }
 
-    function abortUpdate() {
-        toast.warning('Annulation de la modification !')
-        router.push({path: `/post/${actualPost}`})
-    }
-
+        function abortUpdate() {
+            toast.warning('Annulation de la modification !')
+            router.push({path: `/post/${actualPost}`})
+        }
 
         return{
             post,

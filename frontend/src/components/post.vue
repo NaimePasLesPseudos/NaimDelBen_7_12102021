@@ -75,6 +75,7 @@ import { useToast } from 'vue-toastification'
 
 export default {
     name: "Post",
+    emits: ['deleted'],
     props: {
         date: { required: true },
         id: { type: Number },
@@ -88,7 +89,7 @@ export default {
         rofls: { type: String, default: "0" },
         hearts: { type: String, default: "0" }
     },
-    async setup() {
+    async setup(props, { emit }) {
         const router = useRouter()
             , store = useStore()
             , toast = useToast()
@@ -98,7 +99,7 @@ export default {
             try {
                 await deletePost(id)
                 toast.success('Article supprimé !')
-                router.replace('/')
+                emit('deleted', id)
             } catch (e) {
                 return
             }

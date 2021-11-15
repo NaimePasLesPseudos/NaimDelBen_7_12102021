@@ -75,7 +75,7 @@ export async function deletePost(id) {
 
 export function usePostRepository() {
     const posts = ref([])
-        , post = reactive({})
+        , post = reactive({}) // Post for edition
         , loading = ref(false)
 
     async function fetchPosts() {
@@ -114,12 +114,32 @@ export function usePostRepository() {
         }
     }
 
+    async function deletePost(id) {
+        try {
+            const res = await api.deletePost(id)
+            deleteLocalPost(id)
+            
+        } catch (err) {
+            throw new Error(err)
+        }
+    }
+
+    function deleteLocalPost(id) { // delete post from state and not remotelly
+        const index = posts.value.findIndex(item => item.id === id)
+
+        if (index === -1) return
+
+        posts.value.splice(index, 1)
+    }
+
     return {
         posts,
         post,
         loading: readonly(loading),
         fetchPosts,
         fetchOnePost,
-        updatePost
+        updatePost,
+        deletePost,
+        deleteLocalPost,
     }
 }
