@@ -7,7 +7,7 @@ const express = require('express')
 
 router.post(
     '/signup',
-    check('name').isAlphanumeric().isLength({ min: 1}),
+    check('name').isAlphanumeric('fr-FR', { ignore: ' '}).isLength({ min: 1}),
     check('email').isEmail(),
     check('password').isLength({ min: 3 }),
     authCtrl.signup)
