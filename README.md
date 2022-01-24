@@ -1,6 +1,8 @@
 # Groupomania - Corporate Social Network  
 > Last project in OpenClassrooms Web Dev course. By Naïm DEL BEN.
 
+https://dms.licdn.com/playlist/C4D05AQE5eS2m1EqJeg/mp4-720p-30fp-crf28/0/1637146497314?e=1643065200&v=beta&t=cMESsqoLm5runxgCrVbnS010Gqq3rfyBq5UiKAo_8Po
+
 ## Use
 ### Install in local machine 
 1. Download or clone this repo.
